@@ -1,3 +1,65 @@
+<template>
+  <div class="login-page">
+    <div class="logo-container">
+      <!-- Add your logo here -->
+    </div>
+    <form @submit.prevent="submit" class="login-form">
+      <h5 class="login-header">LOG IN</h5>
+      <div class="form-group">
+        <div class="input-field">
+          <InputLabel for="email" value="EMAIL" />
+          <TextInput
+            id="email"
+            type="email"
+            v-model="form.email"
+            required
+            autofocus
+            autocomplete="username"
+          />
+          <InputError :message="form.errors.email" />
+        </div>
+
+        <div class="input-field">
+          <InputLabel for="password" value="PASSWORD" />
+          <TextInput
+            id="password"
+            type="password"
+            v-model="form.password"
+            required
+            autocomplete="current-password"
+          />
+          <InputError :message="form.errors.password" />
+        </div>
+      </div>
+
+ <div class="checkbox-field">
+    <Checkbox name="remember" v-model:checked="form.remember" />
+    <label for="remember" style="font-weight: bold;">&nbsp;&nbsp;Remember me</label>
+    <Link v-if="canResetPassword" :href="route('password.request')" style="font-weight: bold;">
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbspForgot Password?
+    </Link>
+
+
+
+        
+      </div>
+
+      <PrimaryButton :disabled="form.processing" class="login-button">
+      
+      LOG IN</PrimaryButton>
+
+      <div class="links">
+       
+       <Link :href="route('register')" style="font-weight: bold; color: yourOriginalColor;">
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp
+    <span style="color: white;">Not a member?</span> <span style="color: yourOriginalColor;">Sign-up.</span>
+</Link>
+
+      </div>
+    </form>
+  </div>
+</template>
+
 <script setup>
 import Checkbox from '@/Components/Checkbox.vue';
 import GuestLayout from '@/Layouts/GuestLayout.vue';
@@ -29,68 +91,98 @@ const submit = () => {
 };
 </script>
 
-<template>
-    <GuestLayout>
-        <Head title="Log in" />
+<style scoped>
+  .login-page {
+    background-color: #738fa7;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    color: white;
+  }
 
-        <div v-if="status" class="mb-4 font-medium text-sm text-green-600">
-            {{ status }}
-        </div>
+  .login-header {
+    color: #071330;
+    font-family: Arial, sans-serif;
+    text-align: center;
+    font-size: 50px;
+    font-weight: bold;
+  }
 
-        <form @submit.prevent="submit">
-            <div>
-                <InputLabel for="email" value="Email" />
+  .logo-container {
+    width: 300px;
+    height: 300px;
+    background-color: #071330;
+    border-radius: 50%;
+    margin-bottom: 20px;
+  }
 
-                <TextInput
-                    id="email"
-                    type="email"
-                    class="mt-1 block w-full"
-                    v-model="form.email"
-                    required
-                    autofocus
-                    autocomplete="username"
-                />
+  .login-form {
+    background-color: #c3ceda;
+    padding: 20px;
+    border-radius: 25px;
+    color: black;
+    width: 700px;
+    max-width: 80%;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  }
 
-                <InputError class="mt-2" :message="form.errors.email" />
-            </div>
+  .input-field label {
+    font-size: 20px;
+  }
+  .form-group {
+    display: flex;
+    flex-direction: column;
+  }
 
-            <div class="mt-4">
-                <InputLabel for="password" value="Password" />
+  .input-field {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 1px;
+    border-radius: 10px;
+  }
 
-                <TextInput
-                    id="password"
-                    type="password"
-                    class="mt-1 block w-full"
-                    v-model="form.password"
-                    required
-                    autocomplete="current-password"
-                />
+.input-field input {
+    height: 50px; 
+    padding: 10px; 
+    border-radius: 10px; 
+    font-size: 20px; 
+  }
 
-                <InputError class="mt-2" :message="form.errors.password" />
-            </div>
+  .checkbox-field {
+    display: flex;
+    align-items: center;
+    margin-top: 10px;
+    margin-bottom: 10px;
+  }
+  .checkbox-field input[type="checkbox"] {
+    transform: scale(2); 
+    margin-right: 5px; 
+  }
+  .links {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+  }
 
-            <div class="block mt-4">
-                <label class="flex items-center">
-                    <Checkbox name="remember" v-model:checked="form.remember" />
-                    <span class="ml-2 text-sm text-gray-600">Remember me</span>
-                </label>
-            </div>
+  .login-button {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-top: auto;
+    margin-bottom: auto;
+    font-size: 20px;
+    background-color: #071330;
+    height: 50px;
+    border-radius: 10px;
+  }
+  
 
-            <div class="flex items-center justify-end mt-4">
-                <Link
-                    v-if="canResetPassword"
-                    :href="route('password.request')"
-                    class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                >
-                    Forgot your password?
-                </Link>
 
-                <PrimaryButton class="ml-4" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
-                    Log in
-                </PrimaryButton>
-            </div>
-        </form>
-
-    </GuestLayout>
-
-</template>
+  .login-button:hover {
+    background-color: #0c2c49; 
+  }
+</style>
